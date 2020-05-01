@@ -1,0 +1,10 @@
+{
+  "pathParameters": {
+    "date": "2020-04-29"
+  },
+  "requestContext": {
+    "identity": {
+      "cognitoIdentityId": "BLABLA-123"
+    }
+  }
+}

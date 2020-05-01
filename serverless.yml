@@ -14,3 +14,101 @@ provider:
   runtime: nodejs12.x
   stage: prod
   region: us-east-1
+
+  environment:
+    usersTable: users
+    foodsTable: foods
+
+iamRoleStatements:
+  - Effect: Allow
+    Action:
+      - dynamodb:DescribeTable
+      - dynamodb:Query
+      - dynamodb:Scan
+      - dynamodb:GetItem
+      - dynamodb:PutItem
+      - dynamodb:UpdateItem
+      - dynamodb:DeleteItem
+    Resource: "arn:aws:dynamodb:us-east-1:*:*"
+
+functions:
+  # Defines an HTTP API endpoint that calls the main function in create.js
+  # - path: url path is /notes
+  # - method: POST request
+  # - cors: enabled CORS (Cross-Origin Resource Sharing) for browser cross
+  #     domain api call
+  # - authorizer: authenticate using the AWS IAM role
+  createMenu:
+    handler: createMenu.main
+    events:
+      - http:
+          path: menu
+          method: post
+          cors: true
+          authorizer: aws_iam
+
+  getMenu:
+    handler: getMenu.main
+    events:
+      - http:
+          path: menu/{date}
+          method: get
+          cors: true
+          authorizer: aws_iam
+
+  getAllMenus:
+    handler: getAllMenus.main
+    events:
+      - http:
+        path: menus
+        method: get
+        cors: true
+        authorizer: aws_iam
+
+  updateMenu:
+    handler: updateMenu.main
+    events:
+      - http:
+          path: menu/{date}
+          method: put
+          cors: true
+          authorizer: aws_iam
+
+  deleteMenu:
+    handler: deleteMenu.main
+    events:
+      - http:
+        path: menu/{date}
+        method: delete
+        cors: true
+        authorizer: aws_iam
+
+  createFood:
+    handler: createFood.main
+    events:
+      - http:
+        path: food
+        method: post
+        cors: true
+        authorizer: aws_iam
+
+  getAllFoods:
+    handler: getAllFoods.main
+    events:
+      - http:
+        path: foods
+        method: get
+        cors: true
+        authorizer: aws_iam
+
+  getFoods:
+    handler: getFoods.main
+    events:
+      - http:
+        path: foods/{letter}
+        method: get
+        cors: true
+        authorizer: aws_iam
+
+resources:
+  - ${file(resources/api-gateway-errors.yml)}
