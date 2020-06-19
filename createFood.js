@@ -10,12 +10,12 @@ export const main = handler(async (event, context) => {
       letter: data.letter,
       foodName: data.foodName,
       dateAdded: data.dateAdded,
-      image: data.image,
       createdBy: event.requestContext.identity.cognitoIdentityId,
       carbs: data.carbs,
       proteins: data.proteins,
       fats: data.fats,
-      calories: data.calories
+      calories: data.calories,
+      units: data.units
     },
     ConditionExpression: 'attribute_not_exists(foodName)'
   };
